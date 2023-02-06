@@ -1,0 +1,40 @@
+    1  lab manage-builds start
+    2  cd DO288-apps/
+    3  git checkout -b manage-builds
+    4  cat gitcreds.txt 
+    5  git push -u origin manage-builds
+    6  oc new-project developer-manage-builds
+    7  oc new-app --help | grep build-env
+    8  oc new-app --build-env --help
+    9  cat gitcreds.txt 
+   10  oc create secret generic gitcreds --from-literal=username=andrianrf --from-literal=password=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
+   11  oc new-app --name jhost --build-env MAVEN_MIRROR_URL=http://${RHT_OCP4_NEXUS_SERVER}/repository/java -i redhat-openjdk18-openshift:1.8 https://github.com/andrianrf/DO288-apps#manage-builds --context-dir java-serverhost --source-secret=gitcreds
+   12  git status
+   13  oc new-app --name jhost --build-env MAVEN_MIRROR_URL=http://${RHT_OCP4_NEXUS_SERVER}/repository/java -i redhat-openjdk18-openshift:1.8 https://github.com/andrianrf/DO288-apps#manage-builds --source-secret=gitcreds --context-dir java-serverhost
+   14  oc new-app --name jhost --build-env MAVEN_MIRROR_URL=http://${RHT_OCP4_NEXUS_SERVER}/repository/java -i redhat-openjdk18-openshift:1.8 https://github.com/andrianrf/DO288-apps#manage-builds --context-dir java-serverhost
+   15  oc new-app --name jhost --build-env MAVEN_MIRROR_URL=http://${RHT_OCP4_NEXUS_SERVER}/repository/java -i redhat-openjdk18-openshift:1.8 https://github.com/andrianrf/DO288-apps#manage-builds --context-dir java-serverhost --source-secret=gitcreds 
+   16  oc secrets link builder gitcreds
+   17  oc new-app --name jhost --build-env MAVEN_MIRROR_URL=http://${RHT_OCP4_NEXUS_SERVER}/repository/java -i redhat-openjdk18-openshift:1.8 https://github.com/andrianrf/DO288-apps#manage-builds --context-dir java-serverhost
+   18  oc logs -f bc/jhost
+   19  oc get pods
+   20  oc expose svc/jhost
+   21  oc get route
+   22  curl jhost-developer-manage-builds.apps.ocp4.example.com
+   23  oc get bc
+   24  oc get builds
+   25  cd java-serverhost/
+   26  git status
+   27  vi src/main/java/com/redhat/training/example/javaserverhost/rest/ServerHostEndPoint.java 
+   28  git commit -am 'update the version'
+   29  git push
+   30  vi ~/gitcreds.txt 
+   31  git push
+   32  oc get bc
+   33  oc start-build bc/jhost --follow
+   34  oc get builds
+   35  oc get pod
+   36  curl jhost-developer-manage-builds.apps.ocp4.example.com
+   37  oc get po
+   38  curl jhost-developer-manage-builds.apps.ocp4.example.com
+   39  oc delete project developer-manage-builds
+   40  history > ~/DO288-apps/script/manage-builds.txt
