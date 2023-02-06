@@ -1,0 +1,106 @@
+    1  exit
+    2  lab cat /usr/lhistory
+    3  history
+    4  cat /usr/share/bash-completion/completions/lab 
+    5  cat ~/.bashrc 
+    6  helm version
+    7  vi ~/.bashrc
+    8  ssh lab@utility
+    9  exit
+   10  lab --refresh
+   11  exit
+   12  exit
+   13  exit
+   14  exit
+   15  lab-configure
+   16  ls
+   17  echo "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" > gitcreds.txt
+   18  lab-configure 
+   19  git clone https://github.com/andrianrf/DO288-apps
+   20  cd DO288-apps/
+   21  git status
+   22  head README.md 
+   23  cp ~/gitcreds.txt .
+   24  lab docker-build start
+   25  cd
+   26  clear
+   27  lab docker-build start
+   28  cd DO288-apps/
+   29  ls
+   30  mkdir andrian
+   31  rm -fr andrian
+   32  git status
+   33  git add .
+   34  git commit -m "add git creds"
+   35  git status
+   36  cd
+   37  lab docker-build start
+   38  cd DO288
+   39  ls
+   40  cd ..
+   41  cd DO288-apps/
+   42  git checkout main
+   43  git checkout -b docker-build
+   44  git status
+   45  git push -u origin docker-build
+   46  ls
+   47  cat gitcreds.txt 
+   48  git status
+   49  git push -u origin docker-build
+   50  cat ubi-echo/Dockerfile 
+   51  souce /usr/local/etc/ocp4.config 
+   52  source /usr/local/etc/ocp4.config 
+   53  oc login -u ${RHT_OCP4_DEV_USER} -p ${RHT_OCP4_DEV_PASSWORD} ${RHT_OCP4_MASTER_API}
+   54  oc new-project ${RHT_OCP4_DEV_USER}-docker-build
+   55  oc new-app --name echo https://github.com/${RHT_OCP4_GITHUB_USER}/DO288-apps#docker-build --context-dir ubi-echo
+   56  oc logs -f bc/echo
+   57  oc status
+   58  oc get pod
+   59  oc logs echo-b7cb85ffb-zd2f5 
+   60  oc describe bc echo
+   61  oc describe is echo
+   62  cd ubi-echo/
+   63  vi Dockerfile 
+   64  git commit -am 'Add a counter'
+   65  git push
+   66  cat ~/gitcreds.txt 
+   67  git push
+   68  git status
+   69  git push
+   70  cd ..
+   71  ls
+   72  git status
+   73  git push
+   74  vi ~/gitcreds.txt 
+   75  git status
+   76  git push
+   77  cp ~/gitcreds.txt .
+   78  oc start-build echo
+   79  oc logs -f bc/echo
+   80  oc get po
+   81  oc logs echo-7666c46b88-2pgnw 
+   82  oc describe is echo
+   83  oc delete all -l app=echo
+   84  oc get all
+   85  lab docker-build finish
+   86  cd
+   87  ls
+   88  cd DO288
+   89  ls
+   90  cd labs/
+   91  ls
+   92  cd
+   93  rm -fr DO288-apps
+   94  git clone https://github.com/andrianrf/DO288-apps
+   95  cat gitcreds.txt 
+   96  ls
+   97  git clone https://github.com/andrianrf/DO288-apps
+   98  git clone https://github.com/andrianrf/DO288-apps.git
+   99  ls
+  100  cd DO288-apps/
+  101  LS
+  102  ls
+  103  mkdir script
+  104  cd script/
+  105  ls
+  106  history > docker-build.txt
