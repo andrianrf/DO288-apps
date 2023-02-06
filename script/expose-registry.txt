@@ -1,0 +1,33 @@
+    1  lab external-registry start
+    2  ls DO288/labs/external-registry/ubi-sleep/
+    3  sourcee /usr/local/etc/ocp4.config 
+    4  source /usr/local/etc/ocp4.config 
+    5  podman login -u andrianrf0202 quay.io
+    6  skopeo copy --format v2s1 oci:/home/student/DO288/labs/external-registry/ubi-sleep docker://quay.io/andrianrf0202/ubi-sleep:1.0
+    7  lab external-registry finish
+    8  skopeo delete docker://quay.io/andrianrf0202/ubi-sleep:1.0
+    9  oc get route -n openshift-image-registry
+   10  clear
+   11  lab expose-registry start
+   12  source /usr/local/etc/ocp4.config 
+   13  INTERNAL_REGISTRY=default-route-openshift-image-registry.apps.ocp4.example.com
+   14  podman login -u developer -p $(oc whoami -t) $INTERNAL_REGISTRY
+   15  oc new-project ${RHT_OCP4_DEV_USER}-common
+   16  TOKEN=$(oc whoami -t)
+   17  ls ~/DO288/labs/expose-registry/ubi-info/
+   18  skopeo copy --format v2s1 --dest-creds=developer:${TOKEN} oci:/home/student/DO288/labs/expose-registry/ubi-info docker://${INTERNAL_REGISTRY/${RHT_OCP4_DEV_USER}-common/ubi-info:1.0
+   19  skopeo copy --format v2s1 --dest-creds=developer:${TOKEN} oci:/home/student/DO288/labs/expose-registry/ubi-info docker://${INTERNAL_REGISTRY/developer-common/ubi-info:1.0
+   20  skopeo copy --format v2s1 --dest-creds=developer:${TOKEN} oci:/home/student/DO288/labs/expose-registry/ubi-info docker://${INTERNAL_REGISTRY}/developer-common/ubi-info:1.0
+   21  oc get is
+   22  skopeo copy docker://docker.io/andrianrf/va-gateway:latest docker://${INTERNAL_REGISTRY}/andrianrf/va-gateway:latest
+   23  skopeo copy docker://docker.io/andrianrf/va-gateway:latest docker://${INTERNAL_REGISTRY}/andrianrf/va-gateway:latest --dest-creds=developer:${TOKEN}
+   24  skopeo copy --dest-creds=developer:${TOKEN} docker://docker.io/andrianrf/va-gateway:latest docker://${INTERNAL_REGISTRY}/andrianrf/va-gateway:latest 
+   25  oc project
+   26  skopeo copy --dest-creds=developer:${TOKEN} docker://docker.io/andrianrf/va-gateway:latest docker://${INTERNAL_REGISTRY}/developer-common/va-gateway:latest 
+   27  oc get is
+   28  skopeo copy --help | grep creds
+   29  podman pull ${INTERNAL_REGISTRY}/${RHT_OCP4_DEV_USER}-common/ubi-info:1.0
+   30  podman images
+   31  cd DO288-apps/script/
+   32  ls
+   33  history > expose-registry.txt
