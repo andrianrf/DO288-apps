@@ -1,0 +1,25 @@
+    1  lab post-commit start
+    2  source /usr/local/etc/ocp4.config 
+    3  oc whoami
+    4  oc project developer-post-commit
+    5  oc status
+    6  oc new-app --name hook --context-dir post-commit php:7.3~http://github.co/andrianrf/DO288-apps
+    7  oc logs -f bc/hook
+    8  oc new-app --name hook --context-dir post-commit php:7.3~http://github.com/andrianrf/DO288-apps
+    9  oc logs -f bc/hook
+   10  oc delete all -l app=hook
+   11  oc new-app --name hook --context-dir post-commit php:7.3~http://github.com/andrianrf/DO288-apps
+   12  oc logs -f bc/hook
+   13  oc get pods
+   14  cat DO288/labs/post-commit/create-hook.sh 
+   15  DO288/labs/post-commit/create-hook.sh 
+   16  oc describe bc/hook | grep Post
+   17  oc start-build bc/hook -F
+   18  oc get builds
+   19  oc set env bc/hook DEVELOPER="Andrian Ramadhan Febriana"
+   20  oc set env bc/hook --list
+   21  oc start-build bc/hook -F
+   22  firefox $(oc get route/builds-for-managers -o jsonpath='{.spec.host}') &
+   23  oc delete project developer-post-commit
+   24  cp DO288/labs/post-commit DO288-apps/script/ -r
+   25  history > DO288-apps/script/post-commit/history.txt

@@ -1,0 +1,27 @@
+    1  lab build-app start
+    2  source /usr/local/etc/ocp4.config 
+    3  oc whoami
+    4  oc new-project developer-build-app
+    5  cat DO288/labs/build-app/oc-new-app.sh 
+    6  DO288/labs/build-app/oc-new-app.sh 
+    7  oc logs -f bc/simple
+    8  oc set env bc simple --list
+    9  oc set env bc simple npm_config_registry=http://${RHT_OCP4_NEXUS_SERVER}/repository/nodejs
+   10  oc set env bc simple --list
+   11  oc expose svc simple
+   12  oc get route/simple
+   13  oc start-build simple
+   14  oc get pods
+   15  oc get pods -w
+   16  curl simple-developer-build-app.apps.ocp4.example.com
+   17  oc describe bc simple
+   18  SECRET=$(oc get bc simple -o jsonpath="{.spec.triggers[*].generic.secret}{'\n'}")
+   19  echo ${RHT_OCP4_MASTER_API}
+   20  curl -X POST -k ${RHT_OCP4_MASTER_API}apis/build.openshift.io/v1/namespaces/developer-build-app/buildconfigs/simple/webhooks/$SECRET/generic
+   21  oc get builds
+   22  oc logs -f bc/simple
+   23  oc get bc
+   24  oc get pods
+   25  lab build-app grade
+   26  history DO288/labs/build-app/history.txt
+   27  history > DO288/labs/build-app/history.txt
