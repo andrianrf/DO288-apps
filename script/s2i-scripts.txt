@@ -1,0 +1,27 @@
+    1  lab s2i-scripts start
+    2  podman run --name test -it rhscl/httpd-24-rhel7 bash
+    3  cd DO288-apps/
+    4  git checkout main
+    5  cat s2i-scripts/index.html 
+    6  ls -la s2i-scripts/
+    7  vi s2i-scripts/.s2i/bin/assemble 
+    8  tree s2i-scripts
+    9  tree s2i-scripts/.s2i/
+   10  cat s2i-scripts/.s2i/bin/assemble 
+   11  cat s2i-scripts/.s2i/bin/run 
+   12  source /usr/local/etc/ocp4.config 
+   13  oc whoami
+   14  oc new-project developer-s2i-scripts
+   15  oc new-app --name bonjour https:2.4~https://github.com/andrianrf/DO288-apps --context-dir s2i-scripts
+   16  oc new-app --name bonjour httpd:2.4~https://github.com/andrianrf/DO288-apps --context-dir s2i-scripts
+   17  oc logs -f bc/bonjour
+   18  oc get pods
+   19  oc expose svc bonjour
+   20  oc get route
+   21  curl bonjour-developer-s2i-scripts.apps.ocp4.example.com
+   22  oc logs deployment/bonjour
+   23  cd
+   24  oc delete project developer-s2i-scripts
+   25  podman rm test
+   26  lab s2i-scripts finish
+   27  history > DO288-apps/script/s2i-scripts.txt
