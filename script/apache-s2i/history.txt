@@ -1,0 +1,45 @@
+    1  lab apache-s2i start
+    2  s2i version
+    3  s2i create s2i-do288-httpd s2i-do288-httpd
+    4  tree s2i-do288-httpd
+    5  cat DO288/labs/apache-s2i/Containerfile 
+    6  cat s2i-do288-httpd/Dockerfile 
+    7  rm s2i-do288-httpd/Dockerfile 
+    8  cp DO288/labs/apache-s2i/Containerfile s2i-do288-httpd/
+    9  cp -Rv DO288/labs/apache-s2i/s2i s2i-do288-httpd/
+   10  rm -f s2i-do288-httpd/s2i/bin/save-artifacts 
+   11  cd s2i-do288-httpd/
+   12  podman build -t s2i-do288-httpd .
+   13  podman images
+   14  cat ~/DO288/labs/apache-s2i/index.html 
+   15  cp ~/DO288/labs/apache-s2i/index.html ~/s2i-do288-httpd/test/test-app/ -v
+   16  mkdir ~/s2i-sample-app
+   17  s2i build test/test-app/ s2i-do288-httpd s2i-sample-app --as-dockerfile ~/s2i-sample-app/Containerfile
+   18  cd ~/s2i-sample-app/
+   19  tree .
+   20  cat upload/src/index.html 
+   21  cat Containerfile 
+   22  podman build -t s2i-sample-app .
+   23  podman images
+   24  podman login -u andrianrf0202 quay.io
+   25  skopeo copy --format v2s1 container-storage:localhost/s2i-do288-httpd docker://quay.io/andrianrf0202/s2i-do288-httpd
+   26  skopeo copy --format v2s1 containers-storage:localhost/s2i-do288-httpd docker://quay.io/andrianrf0202/s2i-do288-httpd
+   27  oc new-project developer-apache-s2i
+   28  cat ${XDG_RUNTIME_DIR}/containers/auth.json
+   29  podman login -u andrianrf docker.io
+   30  cat ${XDG_RUNTIME_DIR}/containers/auth.json
+   31  oc create secret generic quayio --from-file .dockerconfigjson=${XDG_RUNTIME_DIR}/containers/auth.json --type=kubernetes.io/dockerconfigjson
+   32  oc secrets link builder quayio
+   33  oc import-image s2i-do288-httpd --from quay.io/andrianrf0202/s2i-do288-httpd --confirm
+   34  oc get is
+   35  oc new-app --name hello-s2i s2i-do288-httpd~https://github.com/andrianrf/DO288-apps --context-dir=html-helloworld
+   36  oc logs -f bc/hello-s2i
+   37  oc get pods
+   38  oc expose svc hello-s2i
+   39  export APP_URL=$(oc get route/hello-s2i -o jsonpath='{.spec.host}{"\n"}')
+   40  echo ${APP_URL}
+   41  curl $APP_URL
+   42  oc delete project developer-apache-s2i
+   43  skopeo delete docker://quay.io/andrianrf0202/s2i-do288-httpd
+   44  cd
+   45  history > DO288/labs/apache-s2i/history.txt
