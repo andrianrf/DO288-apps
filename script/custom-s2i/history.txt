@@ -1,0 +1,57 @@
+    1  lab custom-s2i start
+    2  vi DO288/labs/custom-s2i/Dockerfile 
+    3  cd DO288/labs/custom-s2i/
+    4  podman build -t s2i-do288-go .
+    5  podman images
+    6  cat s2i/bin/assemble 
+    7  cat s2i/bin/run 
+    8  mkdir /home/student/s2i-go-app
+    9  s2i build test/test-app/ s2i-do288-go s2i-go-app --as-dockerfile /home/student/s2i-go-app/Dockerfile
+   10  cd ~/s2i-go-app/
+   11  podman build -t s2i-go-app .
+   12  podman images
+   13  podman run --name go-test -u 1234 -p 8080:8080 -d s2i-go-app
+   14  podman ps
+   15  curl http://localhost:8080/usser1
+   16  podman stop go-test
+   17  cd
+   18  source /usr/local/etc/ocp4.config 
+   19  podman login -u andrianrf0202 quay.io
+   20  skopeo copy --format v2s1 containers-storage:localhost/s2i-do288-go docker://quay.io/andrianrf0202/s2i-do288-go
+   21  oc login -u developer -p developer ${RHT_OCP4_MASTER_API}
+   22  oc new-project developer-custom-s2i
+   23  oc create secret generic quayio --from-file .dockerconfigjson=${XDG_RUNTIME_DIR}/containers/auth.json --type=kubernetes.io/dockerconfigjson
+   24  oc secrets link builder quayio
+   25  oc import-image s2i-do288-go --from quay.io/andrianrf0202/s2i-do288-go --confirm
+   26  oc get is
+   27  oc edit is s2i-do288-go 
+   28  cd DO288-apps/
+   29  git checkout main
+   30  git checkout -b custom-s2i
+   31  cat ~/gitcreds.txt 
+   32  git push -u origin custom-s2i
+   33  cd
+   34  oc new-app --name greet s2i-do288-go~https://github.com/andrianrf/DO288-apps#custom-s2i --context-dir=go-hello
+   35  oc logs -f bc/greet
+   36  oc get po
+   37  oc logs -f bc/greet
+   38  oc get pods
+   39  oc expose svc greet
+   40  oc get route/greet -o jsonpath='{.spec.host}{"\n"}'
+   41  curl greet-developer-custom-s2i.apps.ocp4.example.com
+   42  curl greet-developer-custom-s2i.apps.ocp4.example.com/user1
+   43  mkdir -p ~/DO288-apps/go-hello/.s2i/bin
+   44  cp ~/DO288/labs/custom-s2i/s2i/bin/run ~/DO288-apps/go-hello/.s2i/bin/
+   45  vi DO288-apps/go-hello/.s2i/bin/run 
+   46  cd ~/DO288-apps/go-hello
+   47  git add .
+   48  git commit -m "Customized run script"
+   49  cat ~/gitcreds.txt 
+   50  git push
+   51  cd
+   52  oc start-build greet
+   53  oc logs -f bc/greet
+   54  oc get pods
+   55  curl greet-developer-custom-s2i.apps.ocp4.example.com/user1
+   56  lab custom-s2i grade
+   57  history > DO288/labs/custom-s2i/history.txt
