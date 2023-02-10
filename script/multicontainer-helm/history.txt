@@ -1,0 +1,38 @@
+    1  lab multicontainer-helm start
+    2  cd DO288/labs/multicontainer-helm/
+    3  tree
+    4  cat dependencies.yaml 
+    5  cat env.yaml 
+    6  cat mariadb.yaml 
+    7  helm create famouschart
+    8  cd famouschart/
+    9  tree .
+   10  tree ..
+   11  vi values.yaml 
+   12  vi templates/deployment.yaml 
+   13  vi Chart.yaml 
+   14  cat ../dependencies.yaml 
+   15  helm dependency update
+   16  tree
+   17  tar --help | grep list
+   18  tar -tzf charts/mariadb-11.0.13.tgz 
+   19  vi values.yaml 
+   20  vi templates/deployment.yaml 
+   21  vi values.yaml 
+   22  source /usr/local/etc/ocp4.config 
+   23  oc whoami
+   24  echo ${RHT_OCP4_DEV_USER}
+   25  oc login -u developer -p developer ${RHT_OCP4_MASTER_API}
+   26  oc new-project developer-multicontainer-helm
+   27  helm install famousapp .
+   28  oc get deployments
+   29  oc get pods
+   30  oc get deployments
+   31  oc edit deployment famousapp-famouschart 
+   32  oc get ss
+   33  oc get statefulsets
+   34  oc expose service famousapp-famouschart 
+   35  oc get route
+   36  curl famousapp-famouschart-developer-multicontainer-helm.apps.ocp4.example.com
+   37  pwd
+   38  history > /home/student/DO288/labs/multicontainer-helm/history.txt

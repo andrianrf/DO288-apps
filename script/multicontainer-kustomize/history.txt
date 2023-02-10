@@ -1,0 +1,33 @@
+    1  lab multicontainer-kustomize start
+    2  cd DO288/labs/multicontainer-kustomize/
+    3  cat famous-quotes.yaml 
+    4  mkdir famous-kustomize
+    5  cd famous-kustomize/
+    6  mkdir base
+    7  cp ../famous-quotes.yaml base/deployment.yaml
+    8  vi kustomization.yaml
+    9  oc new-project developer-multicontainer-kustomize
+   10  tree
+   11  oc apply -f base
+   12  mkdir -p overlays/dev
+   13  vi overlays/dev/replica_limits.yaml
+   14  vi overlays/dev/kustomization.yaml
+   15  oc apply -k overlays/dev
+   16  vi overlays/dev/kustomization.yaml
+   17  tree
+   18  mv kustomization.yaml base/
+   19  oc apply -k overlays/dev
+   20  oc get deployments famousapp-famouschart -o jsonpath='{.spec.template.spec.containers[0].resources.limits.memory}'
+   21  cp -R overlays/dev overlays/stage
+   22  vi overlays/stage/replica_limits.yaml 
+   23  oc apply -f overlays/stage
+   24  tree
+   25  vi overlays/stage/replica_limits.yaml 
+   26  oc apply -k overlays/stage
+   27  oc get deployments famousapp-famouschart -o jsonpath='{.spec.template.spec.containers[0].resources.limits.memory}'
+   28  cp -R overlays/dev overlays/prod
+   29  vi overlays/prod/replica_limits.yaml 
+   30  oc apply -k overlays/prod
+   31  oc get deployments famousapp-famouschart -o jsonpath='{.spec.template.spec.containers[0].resources.limits.memory}'
+   32  cd
+   33  history > DO288/labs/multicontainer-kustomize/history.txt

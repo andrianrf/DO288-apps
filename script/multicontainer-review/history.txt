@@ -1,0 +1,46 @@
+    1  lab multicontainer-review start
+    2  cd DO288/labs/multicontainer-review/
+    3  pwd
+    4  tree
+    5  helm create exochart
+    6  tree
+    7  cd exochart/
+    8  vi values.yaml 
+    9  vi Chart.yaml 
+   10  helm dependency update
+   11  vi Chart.yaml 
+   12  helm dependency update
+   13  tree
+   14  vi templates/deployment.yaml 
+   15  vi values.yaml 
+   16  oc whoami
+   17  oc new-project developer-multicontainer-review
+   18  helm install exoplanets .
+   19  oc get deployments
+   20  oc get pods
+   21  oc get pod
+   22  oc get po
+   23  oc logs exoplanets-exochart-7f5644dffd-vkzsz 
+   24  vi values.yaml 
+   25  helm install exoplanets .
+   26  oc uninstall exoplanets
+   27  helm uninstall exoplanets
+   28  oc get po
+   29  oc delete po exoplanets-cockroachdb-1 --force
+   30  oc get po
+   31  helm install exoplanets .
+   32  oc get po
+   33  cd ..
+   34  mkdir exokustom
+   35  cd exokustom/
+   36  mkdir base
+   37  helm template exoplanets ../exochart > base/deployment.yaml
+   38  tree ../exochart/
+   39  tree
+   40  vi base/kustomization.yaml
+   41  mkdir -p overlays/test
+   42  vi overlays/test/replica_limits.yaml
+   43  vi overlays/test/kustomization.yaml
+   44  oc apply -k overlays/test
+   45  oc get deployments exoplanets-exochart -o jsonpath='{.spec.template.spec.containers[0].resources.limits}'
+   46  history > ~/DO288/labs/multicontainer-review/history.txt
