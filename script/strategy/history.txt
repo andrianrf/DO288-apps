@@ -1,0 +1,29 @@
+    1  lab strategy start
+    2  oc new-project developer-strategy
+    3  oc new-app --as-deployment-config --name mysql -e MYSQL_USER=test -e MYSQL_PASSWORD=redhat -e MYSQL_DATABASE=testdb -e MYSQL_AIO=0 --image registry.redhat.io/rhel8/mysql-80
+    4  oc get posd
+    5  oc get pod
+    6  oc describe db/mysql
+    7  oc describe dc/mysql
+    8  oc edit dc/mysql
+    9  oc describe dc/mysql | grep -i strategy
+   10  oc describe dc/mysql | grep -i trig
+   11  oc set triggers dc/mysql --from-config --remove
+   12  oc describe dc/mysql | grep -i trig
+   13  oc patch dc/mysql --patch '{"spec":{"stragegy":{"type":"Recreate"}}}'
+   14  oc patch dc/mysql --patch '{"spec":{"strategy":{"type":"Recreate"}}}'
+   15  oc patch dc/mysql --type=json -p='[{"op":"remove", "path": "/spec/strategy/rollingParams"}]'
+   16  DO288/labs/strategy/post-hook.sh 
+   17  oc describe dc/mysql | grep -iA 3 'strateg
+'
+   18  oc describe dc/mysql | grep -iA 3 'strateg'
+   19  oc rollout latest dc/mysql
+   20  watch oc get po
+   21  oc logs mysql-2-hook-post 
+   22  oc set env dc/mysql HOOK_RETRIES=5
+   23  oc rollout latest dc/mysql
+   24  watch oc get pods
+   25  oc logs -f mysql-3-hook-post 
+   26  oc get pods
+   27  oc rsh mysql-3-4sxqr 
+   28  history > DO288/labs/strategy/history.txt

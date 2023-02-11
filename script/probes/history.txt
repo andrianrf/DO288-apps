@@ -1,0 +1,27 @@
+    1  clear
+    2  source /usr/local/etc/ocp4.config 
+    3  oc login -u developer -p developer ${RHT_OCP4_MASTER_API}
+    4  oc new-project developer-probes
+    5  oc new-app --name probes --context-dir probes --build-env npm_config_registry=http://${RHT_OCP4_NEXUS_SERVER}/repository/nodejs nodejs:16-ubi8~https://github.com/andrianrf/DO288-apps
+    6  oc logs -f bc/probes
+    7  oc get pods
+    8  oc expose svc probes
+    9  curl -i probes-developer-probes.apps.ocp4.example.com/ready
+   10  curl -i probes-developer-probes.apps.ocp4.example.com/healthz
+   11  oc set probe deployment probes --liveness --get-url=http://:8080/healthz --initial-delay-seconds=2 --timeout-seconds=2
+   12  oc set probe deployment probes --readiness --get-url=http://:8080/ready --initial-delay-seconds=2 --timeout-seconds=2
+   13  oc describe deployment probees | grep -iA l liveness
+   14  oc describe deployment probees | grep -iA 1 liveness
+   15  oc describe deployment probes | grep -iA 1 liveness
+   16  oc get pods
+   17  oc logs -f probes-66494cb9bb-xkq89 
+   18  cat DO288/labs/probes/kill.sh 
+   19  DO288/labs/probes/kill.sh 
+   20  oc get pods
+   21  oc logs -f probes-66494cb9bb-xkq89 
+   22  cat DO288/labs/probes/not-ready.sh 
+   23  DO288/labs/probes/not-ready.sh 
+   24  oc get po
+   25  oc logs -f probes-66494cb9bb-xkq89 
+   26  oc get po
+   27  history > DO288/labs/probes/history.txt
