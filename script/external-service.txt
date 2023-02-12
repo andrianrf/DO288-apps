@@ -1,0 +1,20 @@
+    1  clear
+    2  source /usr/local/etc/ocp4.config 
+    3  oc whoami
+    4  oc project developer-external-service
+    5  oc status
+    6  oc get po
+    7  oc rsh todoapp-1-kkx2g env | grep DATABASE
+    8  HOSTNAME=$(oc get route todoapp -o jsonpath='{.spec.host}')
+    9  echo $HOSTNAME
+   10  curl -si http://#{HOSTNAME}/todo/api/items/6
+   11  mysqlshow -h${RHT_OCP4_MYSQL_SERVER} -utodoapp -predhat123 todo
+   12  echo ${RHT_OCP4_MYSQL_SERVER}
+   13  oc get svc
+   14  oc create svc externalname tododb --external-name ${RHT_OCP4_MYSQL_SERVER}
+   15  oc get svc
+   16  oc describe svc tododb
+   17  curl -si http://#{HOSTNAME}/todo/api/items/6
+   18  curl -si http://${HOSTNAME}/todo/api/items/6
+   19  oc delete project developer-external-service
+   20  history > DO288-apps/script/external-service.txt
