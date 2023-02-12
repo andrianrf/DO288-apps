@@ -1,0 +1,35 @@
+    1  lab nexus-service start
+    2  cd DO288-apps/nexus3/
+    3  git status
+    4  git checkout main
+    5  grep VOLUME Dockerfile 
+    6  grep NEXUS_DATA Dockerfile 
+    7  grep ENV Dockerfile 
+    8  source /usr/local/etc/ocp4.config 
+    9  podman build -t nexus3 .
+   10  podman login -u andrianrf0202 quay.io
+   11  skopeo copy --format v2s1 containers-storage:localhost/nexus3 docker://quay.io/andrianrf0202/nexus3
+   12  cp -r ~/DO288/labs/nexus-service/nexus-chart ~/
+   13  cd
+   14  ls
+   15  grep -A1 "kind: DockerImage" ~/nexus-chart/templates/imagestream.yaml 
+   16  vi nexus-chart/values.yaml 
+   17  grep -B1 -A5 limits: nexus-chart/templates/deployment.yaml 
+   18  vi nexus-chart/templates/deployment.yaml 
+   19  vi nexus-chart/values.yaml 
+   20  vi nexus-chart/templates/deployment.yaml 
+   21  vi nexus-chart/templates/pvc.yaml 
+   22  oc whoami
+   23  oc new-project developer-nexus-service
+   24  podman login -u andrianrf0202 quay.io
+   25  oc create secret generic quayio --from-file .dockerconfigjson=${XDG_RUNTIME_DIR}/containers/auth.json --type kubernetes.io/dockerconfigjson
+   26  oc secrets link default quayio --for pull
+   27  vi nexus-chart/values.yaml 
+   28  helm install nexus3 ~/nexus-chart
+   29  oc get pods
+   30  oc get po
+   31  oc describe po nexus3-7d89f8b678-7zk46 
+   32  oc get po
+   33  cp -r nexus-chart-final DO288/labs/nexus-service/
+   34  cp -r nexus-chart DO288/labs/nexus-service/nexus-chart-final
+   35  history > DO288/labs/nexus-service/history.txt

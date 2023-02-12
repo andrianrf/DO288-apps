@@ -1,0 +1,78 @@
+    1  lab build-template start
+    2  cd DO288-apps/
+    3  git checkout main
+    4  git status
+    5  git checkout -b main
+    6  clear
+    7  ls quotes/
+    8  cat quotes/get.php 
+    9  source /usr/local/etc/ocp4.config 
+   10  oc get templates -n openshift | grep php | grep mysql
+   11  oc new-project ${RHT_OCP4_DEV_USER}-common
+   12  oc create -f ~/DO288/labs/build-template/php-mysql-ephemeral.json 
+   13  oc new-project ${RHT_OCP4_DEV_USER}-build-template
+   14  oc describe template php-mysql-ephemeral -n ${RHT_OCP4_DEV_USER}-common
+   15  cat ~/DO288/labs/build-template/create-app.sh 
+   16  ~/DO288/labs/build-template/create-app.sh 
+   17  oc logs -f bc/quotesapi
+   18  ls
+   19  cat ~/DO288/labs/build-template/create-app.sh 
+   20  vi ~/DO288/labs/build-template/php-mysql-ephemeral.json 
+   21  oc proejct
+   22  oc project
+   23  oc create -f ~/DO288/labs/build-template/php-mysql-ephemeral.json 
+   24  vi ~/DO288/labs/build-template/php-mysql-ephemeral.json 
+   25  oc create -f ~/DO288/labs/build-template/php-mysql-ephemeral.json 
+   26  oc create secret generic gitcreds --from-literal=username=andrianrf --from-literal=password=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
+   27  ~/DO288/labs/build-template/create-app.sh 
+   28  oc delete all -l app=quotesapi
+   29  ~/DO288/labs/build-template/create-app.sh 
+   30  oc delete all -l app=quotesapi
+   31  oc delete all -l app=quotesdb
+   32  ~/DO288/labs/build-template/create-app.sh 
+   33  oc logs -f bc/quotesapi
+   34  oc describe bc/quotesapi
+   35  oc delete all -l app=quotesdb
+   36  oc delete all -l app=quotesapi
+   37  oc get all
+   38  oc get secret
+   39  oc delete secret quotesapi
+   40  oc get template
+   41  oc describe template php-mysql-ephemeral 
+   42  oc delete template php-mysql-ephemeral 
+   43  cat ~/DO288/labs/build-template/create-app.sh 
+   44  oc project
+   45  oc get template -n ${RHT_OCP4_DEV_USER}-common
+   46  oc delete template -n ${RHT_OCP4_DEV_USER}-common
+   47  oc delete template php-mysql-ephemeral -n ${RHT_OCP4_DEV_USER}-common
+   48  vi ~/DO288/labs/build-template/php-mysql-ephemeral.json 
+   49  oc project
+   50  oc project developer-common
+   51  oc get all
+   52  oc create secret generic gitcreds --from-literal=username=andrianrf --from-literal=password=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
+   53  oc create -f ~/DO288/labs/build-template/php-mysql-ephemeral.json 
+   54  oc project developer-build-template
+   55  oc get secret
+   56  oc delete secret gitcreds
+   57  ~/DO288/labs/build-template/create-app.sh 
+   58  oc logs -f bc/quotesapi
+   59  oc project
+   60  oc get bc
+   61  oc logs -f bc/quotesapi
+   62  oc describe bc quotesapi
+   63  oc create secret generic gitcreds --from-literal=username=andrianrf --from-literal=password=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
+   64  oc logs -f bc/quotesapi
+   65  oc describe bc quotesapi
+   66  oc get all
+   67  oc describe bc quotesapi
+   68  oc logs -f bc/quotesapi
+   69  oc get pod
+   70  ls
+   71  cd script/
+   72  ls
+   73  cp -r ~/DO288/ .
+   74  ls
+   75  cd DO288/labs/
+   76  ls
+   77  cd build-template/
+   78  history > history.txt

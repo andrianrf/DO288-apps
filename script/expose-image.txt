@@ -1,0 +1,39 @@
+    1  lab expose-image start
+    2  podman login -u andrianrf0202 quay.io
+    3  skopeo copy --format v2s1 oci:/home/student/DO288/labs/expose-image/php-info docker://quay.io/andrianrf0202/php-info
+    4  oc new-project developer-common
+    5  oc create secret generic quayio --from-literal=username=andrianrf0202 --from-literal=password=C1r3n91tu3n4k!
+    6  oc import-image php-info --from quay.io/${rht_ocp4_quay_user}/php-info
+    7  oc get is
+    8  oc import-image php-info --confirm --from quay.io/${rht_ocp4_quay_user}/php-info
+    9  oc import-image php-info --confirm --from quay.io/andrianrf0202/php-info
+   10  oc delete secret quayio
+   11  oc create secret generic quayio --from-literal=username=andrianrf0202 --from-literal=password=C1r3n91tu3n4k! --type kubernetes.io/dockerconfigjson
+   12  oc create secret generic quayio --from-file .dockerconfigjson=${XDG_RUNTIME_DIR}/containers/auth.json --type kubernetes.io/dockerconfigjson
+   13  oc import-image php-info --confirm --from quay.io/andrianrf0202/php-info
+   14  oc get istag
+   15  oc new-project developer-expose-image
+   16  oc policy add-role-to-group -n developer-common system:image-puller system:serviceaccounts:developer-expose-image
+   17  oc get is
+   18  oc new-app --name info -i developer-common/php-info
+   19  oc get pod
+   20  oc get is -n developer-common
+   21  oc describe po info-5875c6c4c5-fpxkw 
+   22  oc get is
+   23  oc get is -n developer-common
+   24  cat DO288/labs/expose-image/grant-puller-role.sh 
+   25  ~/DO288/labs/expose-image/grant-puller-role.sh 
+   26  oc get po
+   27  oc delete po info-5875c6c4c5-fpxkw --force
+   28  oc get po
+   29  oc project developer-common
+   30  oc delete is php-info
+   31  oc import-image php-info --confirm --reference-policy local --from quay.io/andrianrf0202/php-info
+   32  oc project developer-expose-image
+   33  oc get po
+   34  oc expose svc info
+   35  oc get route
+   36  curl info-developer-expose-image.apps.ocp4.example.com
+   37  lab expose-image grade
+   38  lab expose-image finish
+   39  history > DO288-apps/script/expose-image.txt

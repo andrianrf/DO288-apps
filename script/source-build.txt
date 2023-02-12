@@ -1,0 +1,32 @@
+    1  clear
+    2  lab source-build start
+    3  source /usr/local/etc/ocp4.config 
+    4  oc whoami
+    5  oc new-project developer-source-build
+    6  cd DO288-apps/
+    7  git checkout main
+    8  git checkout -b source-build
+    9  cat ~/gitcreds.txt 
+   10  git push -u origin source-build
+   11  oc project
+   12  oc create secret generic gitcreds --from-literal=username=andrianrf --from-literal=password=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
+   13  oc new-app --name greet --build-env npm_config_registry=http://${RHT_OCP4_NEXUS_SERVER}/repository/nodejs nodejs:16-ubi8~https://github.com/${RHT_OCP4_GITHUB_USER}/DO288-apps#source-build --context-dir nodejs-helloworld --source-secret=gitcreds
+   14  oc logs -f bc/greet
+   15  python3 -m json.tool nodejs-helloworld/package.json 
+   16  vi nodejs-helloworld/package.json 
+   17  git status
+   18  git commit -am 'Fixed JSON syntax'
+   19  git push
+   20  oc start-build --follow bc/greet
+   21  oc status
+   22  oc get pod
+   23  oc logs greet-6f4b4bc769-jb9sc 
+   24  oc expose svc/greet
+   25  oc get route
+   26  curl greet-developer-source-build.apps.ocp4.example.com
+   27  lab source-build grade
+   28  git checkout main
+   29  ls
+   30  cd script/
+   31  ls
+   32  history > source-build.txt

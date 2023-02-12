@@ -1,0 +1,19 @@
+    1  clear
+    2  lab image-stream start
+    3  source /usr/local/etc/ocp4.config 
+    4  oc new-project developer-common
+    5  oc import-image hello-world --confirm --from quay.io/redhattraining/hello-world-nginx
+    6  oc get is
+    7  oc get istag
+    8  oc describe is hello-world
+    9  oc new-project developer-image-stream
+   10  oc project
+   11  oc new-app --name hello -i developer-common/hello-world
+   12  oc get pod
+   13  oc expose svc hello
+   14  oc get routes
+   15  curl hello-developer-image-stream.apps.ocp4.example.com
+   16  oc delete project developer-image-stream
+   17  oc delete project developer-common
+   18  lab image-stream finish
+   19  history > ~/DO288-apps/script/image-stream.txt
