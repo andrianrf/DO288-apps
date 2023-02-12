@@ -1,0 +1,34 @@
+    1  clear
+    2  lab manage-deploy start
+    3  cd DO288-apps/
+    4  git checkout main
+    5  git checkout -b manage-deploy
+    6  git push -u origin manage-deploy
+    7  oc whoami
+    8  oc new-project developer-manage-deploy
+    9  oc new-app --as-deployment-config --name scale php:7.3~https://github.com/andrianrf/DO288-apps#manage-deploy --context-dir php-scale
+   10  oc logs -f bc/scale
+   11  oc get pods
+   12  oc expose svc scale
+   13  oc get po
+   14  curl http://scale-developer-manage-deploy.apps.ocp4.example.com
+   15  oc describe dc/scale | grep -i strategy
+   16  oc scale dc/scale --replicas=2
+   17  oc get po
+   18  curl http://scale-developer-manage-deploy.apps.ocp4.example.com
+   19  vi php-scale/index.php 
+   20  git commit -am "updated app to version 2"
+   21  git push
+   22  oc get po
+   23  oc get builds
+   24  oc get bc
+   25  oc start-build bc/scale
+   26  oc get po
+   27  watch oc get po
+   28  curl http://scale-developer-manage-deploy.apps.ocp4.example.com
+   29  oc rollback dc/scale
+   30  watch oc get po
+   31  curl http://scale-developer-manage-deploy.apps.ocp4.example.com
+   32  lab manage-deploy grade
+   33  oc delete project developer-manage-deploy
+   34  history > script/manage-deploy.txt
