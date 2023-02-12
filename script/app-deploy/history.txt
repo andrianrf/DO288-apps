@@ -1,0 +1,35 @@
+    1  clear
+    2  cd DO288-apps/
+    3  git checkout main
+    4  git checkout -b app-deploy
+    5  git push -u origin app-deploy
+    6  cat ~/gitcreds.txt 
+    7  git push -u origin app-deploy
+    8  cat quip/src/main/java/com/redhat/training/example/Quip.java 
+    9  source /usr/local/etc/ocp4.config 
+   10  oc whoami
+   11  oc new-project developer-app-deploy
+   12  oc new-app --as-deployment-config --name quip --build-env MAVEN_MIRROR_URL=http://${RHT_OCP4_NEXUS_SERVER}/repository/java -i redhat-openjdk18-openshift:1.8 --context-dir quip https://github.com/andrianrf/DO288-apps#app-deploy
+   13  oc logs -f bc/quip
+   14  oc get pods
+   15  oc logs quip-1-deploy
+   16  oc expose svc quip
+   17  oc describe dc/quip | grep http-get
+   18  oc set probe dc/quip --liveness --readiness --get-url=http://:8080/ready --initial-delay-seconds=30 --timeout-seconds=2
+   19  oc describe dc/quip | grep http-get
+   20  oc get pods
+   21  oc get pod
+   22  cd
+   23  cat DO288/labs/app-deploy/app-change.sh 
+   24  cat gitcreds.txt 
+   25  DO288/labs/app-deploy/app-change.sh 
+   26  oc start-build quip -F
+   27  oc get pod
+   28  curl http://quip-developer-app-deploy.ocp4.example.com
+   29  curl http://quip-developer-app-deploy.app.ocp4.example.com
+   30  curl http://quip-developer-app-deploy.apps.ocp4.example.com
+   31  oc rollback dc/quip
+   32  oc get pods
+   33  curl http://quip-developer-app-deploy.apps.ocp4.example.com
+   34  oc delete project developer-app-deploy
+   35  history > DO288/labs/app-deploy/history.txt
