@@ -1,0 +1,45 @@
+    1  lab review-todo start
+    2  source /usr/local/etc/ocp4.config 
+    3  oc whoami
+    4  oc new-project developer-review-todo
+    5  cd DO288/labs/review-todo/
+    6  tree
+    7  helm create todo-list
+    8  cd todo-list/
+    9  vi Chart.yaml 
+   10  helm dependency update
+   11  vi values.yaml 
+   12  vi templates/deployment.yaml 
+   13  helm install todo-list .
+   14  watch oc get pods
+   15  oc expose svc/todo-list
+   16  export URL_TO_APPLICATION=$(oc get route/todo-list -o jsonpath='{.spec.host}')
+   17  curl $URL_TO_APPLICATION
+   18  curl $URL_TO_APPLICATION/api/items
+   19  cd ~/DO288-apps/
+   20  vi todo-frontend/Containerfile 
+   21  cd todo-frontend/
+   22  podman build . -t quay.io/andrianrf0202/todo-frontend:latest
+   23  podman login -u andrianrf0202 quay.io
+   24  podman push --format v2s1 quay.io/andrianrf0202/todo-frontend
+   25  oc new-app quay.io/andrianrf0202/todo-frontend
+   26  oc get pods
+   27  oc get pod
+   28  oc new-app quay.io/andrianrf0202/todo-frontend
+   29  oc get po
+   30  oc new-app quay.io/andrianrf0202/todo-frontend:latest
+   31  oc create secret generic quayio-creds --docker-server=quay.io --docker-username=andrianrf0202 --docker-password=C1r3n91tu3n4k! 
+   32  oc create secret docker-registry quayio-creds --docker-server=quay.io --docker-username=andrianrf0202 --docker-password=C1r3n91tu3n4k! 
+   33  oc secrets link default quayio-creds --for=pull
+   34  oc new-app quay.io/andrianrf0202/todo-frontend
+   35  oc get pod
+   36  oc expose svc/todo-frontend
+   37  oc get route todo-frontend -o jsonpath='{.spec.host}'
+   38  oc new-app https://github.com/RedHatTraining/DO288-apps --name todo-ssr --context-dir=todo-ssr --build-env npm_config_registry="${RHT_OCP4_NEXUS_SERVER}/repository/nodejs"
+   39  oc create configmap todo-ssr-host --from-literal API_HOST="http://todo-list:3000"
+   40  oc set env deployment/todo-ssr --from cm/todo-ssr-host
+   41  oc get pods
+   42  oc expose svc/todo-ssr
+   43  oc get route todo-ssr -o jsonpath='{.spec.host}'
+   44  lab review-todo grade
+   45  history > ~/DO288/labs/review-todo/history.txt
