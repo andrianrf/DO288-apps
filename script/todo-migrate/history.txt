@@ -1,0 +1,32 @@
+    1  lab todo-migrate start
+    2  source /usr/local/etc/ocp4.config 
+    3  echo $RHT_OCP4_MYSQL_SERVER
+    4  mysql -h${RHT_OCP4_MYSQL_SERVER} -utodoapp -predhat123 todo
+    5  oc whoami
+    6  oc new-project developer-todo-migrate
+    7  oc create service externalname tododb --external-name ${RHT_OCP4_MYSQL_SERVER}
+    8  oc get svc
+    9  cd ~/DO288-apps/
+   10  git checkout main
+   11  git checkout -b todo-migrate
+   12  cat ~/gitcreds.txt 
+   13  git push -u origin todo-migrate
+   14  cd todo-api
+   15  mvn clean compile package oc:build oc:resource oc:apply
+   16  oc get pod
+   17  oc logs -f todo-api-858c866f74-6z5rj 
+   18  cp ~/DO288/solutions/todo-migrate/cm.yml src/main/jkube
+   19  vi src/main/jkube/deployment.yml
+   20  mvn oc:resource oc:apply
+   21  oc describe deployment/todo-api | grep -A1 "Environ"
+   22  oc get cm
+   23  oc get po
+   24  oc logs -f todo-api-c59dbf4c6-wgkdb 
+   25  ROUTE_URL=$(oc get route todo-api --template={{.spec.host}})
+   26  curl -s ${ROUTE_URL}/todo/api/items/6 | jq
+   27  git add src/main/jkube/*
+   28  git commit -m "add YAML fragments"
+   29  cat ~/gitcreds.txt 
+   30  git push origin todo-migrage
+   31  git push origin todo-migrate
+   32  history > ~/DO288/labs/todo-migrate/history.txt
