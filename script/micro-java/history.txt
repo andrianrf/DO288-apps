@@ -1,0 +1,33 @@
+    1  lab micro-java start 
+    2  source /usr/local/etc/ocp4.config 
+    3  oc login -u developer -p developer
+    4  oc new-project developer-micro-java
+    5  cd DO288-apps/micro-java/
+    6  git checkout -b micro-config
+    7  git status
+    8  git push -u origin micro-config
+    9  cat ~/gitcreds.txt 
+   10  git push -u origin micro-config
+   11  vi pom.xml 
+   12  vi src/main/jkube/deployment.yml 
+   13  mvn -DskipTests package oc:build oc:resource
+   14  less target/classes/META-INF/jkube/openshift/micro-java-deployment.yml 
+   15  less target/classes/META-INF/jkube/openshift/micro-java-service.yml 
+   16  less target/classes/META-INF/jkube/openshift/micro-java-route.yml 
+   17  mvn -DskipTests oc:deploy
+   18  oc status
+   19  oc get po
+   20  ROUTE_URL=$(oc get route micro-java --template='{{.spec.host}}')
+   21  curl ${ROUTE_URL}/api/hello
+   22  vi src/main/jkube/cm.yml 
+   23  git status
+   24  git add src/main/jkube/*.yml
+   25  git commit -am "Add YAML fragments."
+   26  git push
+   27  mvn -DskipTests oc:build oc:resource oc:apply
+   28  oc get cm/configmap-hello
+   29  oc get po
+   30  curl ${ROUTE_URL}/api/hello
+   31  oc delete project developer-micro-java
+   32  pwd
+   33  history > ~/DO288/labs/micro-java/history.txt
